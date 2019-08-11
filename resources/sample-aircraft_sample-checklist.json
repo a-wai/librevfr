@@ -1,0 +1,14 @@
+{
+  "aircraft": "sample-aircraft",
+  "checklist": "Sample checklist",
+  "items": [
+    { "item": "First item", "value": "Value 1" },
+    { "item": "Second item", "value": "Value 2" },
+    { "item": "Third item", "value": "Value 3" },
+    { "item": "Fourth item", "value": "Value 4" },
+    { "item": "Fifth item", "value": "Value 5" },
+    { "item": "Sixth item", "value": "Value 6" },
+    { "item": "Seventh item", "value": "Value 7" },
+    { "item": "Eighth item", "value": "Value 8" }
+  ]
+}

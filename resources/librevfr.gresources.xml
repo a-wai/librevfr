@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<gresources>
+  <gresource prefix="/com/a-wai/librevfr/ui">
+    <file preprocess="xml-stripblanks">librevfr.ui</file>
+  </gresource>
+  <gresource prefix="/com/a-wai/librevfr/samples">
+    <file>sample-aircraft.json</file>
+    <file>sample-aircraft_sample-checklist.json</file>
+  </gresource>
+</gresources>

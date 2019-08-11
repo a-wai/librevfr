@@ -1,0 +1,14 @@
+{
+  "id": "sample-flight",
+  "origin": "Origin",
+  "orig_icao": "ABCD",
+  "destination": "Destination",
+  "dest_icao": "WXYZ",
+  "legs": [
+    { "name": "Point 1", "heading": 125, "distance": 12, "altitude": 1800 },
+    { "name": "Point 2", "heading": 147, "distance": 7, "altitude": 1800  },
+    { "name": "Point 3", "heading": 44, "distance": 5, "altitude": 1800  },
+    { "name": "Point 4", "heading": 9, "distance": 18, "altitude": 2100  },
+    { "name": "Point 5", "heading": 57, "distance": 7, "altitude": 1800  }
+  ]
+}

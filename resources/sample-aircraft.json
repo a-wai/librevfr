@@ -1,0 +1,13 @@
+{
+  "id": "sample-aircraft",
+  "manufacturer": "Sample",
+  "model": "Aircraft",
+  "empty_weight": 500,
+  "mtow": 1000,
+  "weight_unit": "kg",
+  "cruising_speed": 100,
+  "speed_unit": "kt",
+  "checklists": [
+    { "id": "sample-aircraft_sample-checklist" }
+  ]
+}

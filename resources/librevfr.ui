@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.22.1 -->
+<interface>
+  <requires lib="gtk+" version="3.20"/>
+  <requires lib="libhandy" version="0.0"/>
+  <object class="GtkPopover" id="menu_popover">
+    <child>
+      <object class="GtkBox">
+        <property name="visible">True</property>
+        <property name="spacing">6</property>
+        <property name="margin">18</property>
+        <property name="orientation">vertical</property>
+        <property name="width_request">200</property>
+        <child>
+          <object class="GtkModelButton">
+            <property name="action-name">app.preferences</property>
+            <property name="can-focus">True</property>
+            <property name="text" translatable="yes">Preferences</property>
+            <property name="visible">True</property>
+          </object>
+        </child>
+      </object>
+    </child>
+  </object>
+  <template class="VFRMainWindow" parent="GtkApplicationWindow">
+    <property name="can_focus">False</property>
+    <property name="default_width">360</property>
+    <property name="default_height">576</property>
+    <child type="titlebar">
+        <object class="HdyHeaderBar">
+            <property name="visible">True</property>
+            <property name="centering_policy">strict</property>
+            <property name="can_focus">False</property>
+            <property name="show_close_button">True</property>
+            <property name="title">LibreVFR</property>
+            <child>
+                <object class="GtkStack" id="header_stack">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <child>
+                        <object class="GtkMenuButton" id="menu_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="focus_on_click">False</property>
+                            <property name="popover">menu_popover</property>
+                            <child>
+                                <object class="GtkImage">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="icon_name">open-menu-symbolic</property>
+                                </object>
+                            </child>
+                        </object>
+                        <packing>
+                            <property name="name">menu-button</property>
+                        </packing>
+                    </child>
+                    <child>
+                        <object class="GtkButton" id="back_button">
+                            <property name="visible">True</property>
+                            <property name="can_focus">False</property>
+                            <property name="receives_default">False</property>
+                            <property name="valign">center</property>
+                            <property name="use-underline">True</property>
+                            <signal name="clicked" handler="back_clicked_cb"/>
+                            <style>
+                              <class name="image-button"/>
+                            </style>
+                            <child internal-child="accessible">
+                                <object class="AtkObject" id="a11y-back">
+                                    <property name="accessible-name" translatable="yes">Back</property>
+                                </object>
+                            </child>
+                            <child>
+                                <object class="GtkImage" id="back_image">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="icon_name">go-previous-symbolic</property>
+                                    <property name="icon_size">1</property>
+                                </object>
+                            </child>
+                        </object>
+                        <packing>
+                            <property name="name">back-button</property>
+                        </packing>
+                    </child>
+                </object>
+                <packing>
+                  <property name="pack_type">start</property>
+                </packing>
+            </child>
+        </object>
+    </child>
+    <child>
+      <object class="GtkBox" id="main_box">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <child>
+          <object class="GtkStack" id="main_stack">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <child>
+              <object class="GtkStack" id="prep_page">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="name">prep-page</property>
+                <property name="title" translatable="yes">Preparation</property>
+                <property name="icon_name">applications-utilities-symbolic</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="nav_page">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="name">nav-page</property>
+                <property name="title" translatable="yes">Navigation</property>
+                <property name="icon_name">emoji-travel-symbolic</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkStack" id="docs_page">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <child>
+                  <placeholder/>
+                </child>
+              </object>
+              <packing>
+                <property name="name">docs-page</property>
+                <property name="title" translatable="yes">Documents</property>
+                <property name="icon_name">folder-symbolic</property>
+                <property name="position">2</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="HdyViewSwitcherBar" id="main_switcher_bar">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="policy">auto</property>
+            <property name="stack">main_stack</property>
+            <property name="reveal">True</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+  </template>
+</interface>

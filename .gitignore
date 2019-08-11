@@ -1,0 +1,4 @@
+*.o
+librevfr
+
+src/librevfr-resources.*
