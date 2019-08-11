@@ -1,5 +1,9 @@
 *.o
 librevfr
 
+# Generated .c/.h resources
 src/librevfr-resources.*
+resources/librevfr-resources.*
+
+# Ignore API key as it should not be disclosed
 src/provider-basulm-apikey.h
