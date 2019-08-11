@@ -6,8 +6,6 @@
 
 #include "terrain.h"
 
-#include <stdlib.h>
-
 struct _VFRTerrain {
     GString *name;
     GString *icao;

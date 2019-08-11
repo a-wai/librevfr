@@ -10,7 +10,6 @@
 #include "flight.h"
 
 #include <math.h>
-#include <stdio.h>
 
 struct _VFRNavPage {
     GtkWidget *parent_stack;

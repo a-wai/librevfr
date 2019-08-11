@@ -9,12 +9,6 @@
 #include "provider.h"
 #include "utils.h"
 
-// Files functions
-#include <glib.h>
-#include <fcntl.h>
-#include <sys/types.h>
-#include <sys/stat.h>
-
 struct _VFRDocsPage {
     GtkWidget *parent_stack;
     GtkWidget *menu_stack;

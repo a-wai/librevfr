@@ -32,6 +32,10 @@ VFRTerrain *vfr_provider_get_terrain_by_index(VFRProvider *provider, int index);
 void vfr_provider_add_terrain(VFRProvider *provider, VFRTerrain *terrain);
 
 void vfr_provider_set_callbacks(VFRProvider *provider, vfr_provider_cb needs_update,
-                                vfr_provider_cb update_terrains, vfr_provider_cb load_terrains);
+                                vfr_provider_cb update_terrains);
+
+gboolean vfr_provider_check_dirs(VFRProvider *self);
+gboolean vfr_provider_write_list(VFRProvider *self);
+gboolean vfr_provider_load_terrains(VFRProvider *self);
 
 #endif /* _VFR_PROVIDER_H */

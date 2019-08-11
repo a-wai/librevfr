@@ -5,10 +5,13 @@
  */
 
 #include "provider.h"
+
 #include "provider-sia.h"
 #include "provider-basulm.h"
 
-#include <stdio.h>
+#include <unistd.h>
+
+#include <glib/gstdio.h>
 
 struct _VFRProvider {
     GString *name;
@@ -18,7 +21,6 @@ struct _VFRProvider {
 
     vfr_provider_cb needs_update;
     vfr_provider_cb update_terrains;
-    vfr_provider_cb load_terrains;
 };
 
 GPtrArray *vfr_provider_init(void)
@@ -38,7 +40,7 @@ GPtrArray *vfr_provider_init(void)
             provider->update_terrains(provider);
         }
 
-        provider->load_terrains(provider);
+        vfr_provider_load_terrains(provider);
     }
 
     return array;
@@ -104,11 +106,85 @@ void vfr_provider_add_terrain(VFRProvider *provider, VFRTerrain *terrain)
 }
 
 void vfr_provider_set_callbacks(VFRProvider *provider, vfr_provider_cb needs_update,
-                                vfr_provider_cb update_terrains, vfr_provider_cb load_terrains)
+                                vfr_provider_cb update_terrains)
 {
     if (provider) {
         provider->needs_update = needs_update;
         provider->update_terrains = update_terrains;
-        provider->load_terrains = load_terrains;
     }
+}
+
+gboolean vfr_provider_check_dirs(VFRProvider *self)
+{
+    GString *data_dir = g_string_new(g_get_user_data_dir());
+
+    g_string_append_printf(data_dir, "/librevfr/%s/files", vfr_provider_get_id(self));
+
+    if (g_access(data_dir->str, F_OK) < 0) {
+        g_mkdir_with_parents(data_dir->str, 0755);
+        g_string_free(data_dir, TRUE);
+        return FALSE;
+    }
+
+    return TRUE;
+}
+
+gboolean vfr_provider_write_list(VFRProvider *self)
+{
+    GString *data_list = g_string_new(g_get_user_data_dir());
+    char *line = NULL;
+    size_t size = 0;
+    gboolean favorite;
+    FILE *file;
+    int len;
+
+    g_string_append_printf(data_list, "/librevfr/%s/list", vfr_provider_get_id(self));
+    file = g_fopen(data_list->str, "w");
+    if (!file)
+        return FALSE;
+
+    for (guint i = 0; i < vfr_provider_get_terrain_count(self); i++) {
+        VFRTerrain *terrain = vfr_provider_get_terrain_by_index(self, i);
+
+        fprintf(file, "%s;%s;%d\n", vfr_terrain_get_name(terrain),
+                                    vfr_terrain_get_icao(terrain),
+                                    vfr_terrain_is_favorite(terrain));
+    }
+
+    return TRUE;
+}
+
+gboolean vfr_provider_load_terrains(VFRProvider *self)
+{
+    GString *data_list = g_string_new(g_get_user_data_dir());
+    char *line = NULL;
+    size_t size = 0;
+    gboolean favorite;
+    FILE *file;
+    int len;
+
+    g_string_append_printf(data_list, "/librevfr/%s/list", vfr_provider_get_id(self));
+    file = g_fopen(data_list->str, "r");
+    if (!file)
+        return FALSE;
+
+    while ((len = getline(&line, &size, file)) && !feof(file)) {
+        char **split;
+        VFRTerrain *terrain;
+
+        line[len-1] = 0;
+        split = g_strsplit(line, ";", 0);
+        if (split && split[0] && split[1]) {
+            if (split[2] && split[2][0] == '1')
+                favorite = TRUE;
+            else
+                favorite = FALSE;
+            terrain = vfr_terrain_new(split[0], split[1], favorite);
+            vfr_provider_add_terrain(self, terrain);
+            g_strfreev(split);
+        }
+    }
+    free(line);
+
+    return TRUE;
 }

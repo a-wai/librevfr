@@ -8,31 +8,10 @@
 
 #include "utils.h"
 
-#include <stdlib.h>
-#include <unistd.h>
-
 #include <ctype.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
+
 #include <curl/curl.h>
-
 #include <glib/gstdio.h>
-
-static gboolean sia_check_dirs(VFRProvider *self)
-{
-    GString *data_dir = g_string_new(g_get_user_data_dir());
-
-    g_string_append_printf(data_dir, "/librevfr/%s/files", vfr_provider_get_id(self));
-
-    if (g_access(data_dir->str, F_OK) < 0) {
-        g_mkdir_with_parents(data_dir->str, 0755);
-        g_string_free(data_dir, TRUE);
-        return FALSE;
-    }
-
-    return TRUE;
-}
 
 static gboolean sia_needs_update(VFRProvider *self)
 {
@@ -45,7 +24,7 @@ static gboolean sia_needs_update(VFRProvider *self)
     g_string_append_printf(data_airac, "/librevfr/%s/version", vfr_provider_get_id(self));
     g_string_append_printf(data_list, "/librevfr/%s/list", vfr_provider_get_id(self));
 
-    if (!sia_check_dirs(self) ||
+    if (!vfr_provider_check_dirs(self) ||
         g_access(data_airac->str, F_OK) < 0 ||
         g_access(data_list->str, F_OK) < 0) {
         goto update_needed;
@@ -70,66 +49,6 @@ update_needed:
     g_string_free(data_list, TRUE);
     if (current_airac)
         g_string_free(current_airac, TRUE);
-    return TRUE;
-}
-
-static gboolean sia_load_terrains(VFRProvider *self)
-{
-    GString *data_list = g_string_new(g_get_user_data_dir());
-    char *line = NULL;
-    size_t size = 0;
-    gboolean favorite;
-    FILE *file;
-    int len;
-
-    g_string_append_printf(data_list, "/librevfr/%s/list", vfr_provider_get_id(self));
-    file = g_fopen(data_list->str, "r");
-    if (!file)
-        return FALSE;
-
-    while ((len = getline(&line, &size, file)) && !feof(file)) {
-        char **split;
-        VFRTerrain *terrain;
-
-        line[len-1] = 0;
-        split = g_strsplit(line, ";", 0);
-        if (split && split[0] && split[1]) {
-            if (split[2] && split[2][0] == '1')
-                favorite = TRUE;
-            else
-                favorite = FALSE;
-            terrain = vfr_terrain_new(split[0], split[1], favorite);
-            vfr_provider_add_terrain(self, terrain);
-            g_strfreev(split);
-        }
-    }
-    free(line);
-
-    return TRUE;
-}
-
-static gboolean sia_write_list(VFRProvider *self)
-{
-    GString *data_list = g_string_new(g_get_user_data_dir());
-    char *line = NULL;
-    size_t size = 0;
-    gboolean favorite;
-    FILE *file;
-    int len;
-
-    g_string_append_printf(data_list, "/librevfr/%s/list", vfr_provider_get_id(self));
-    file = g_fopen(data_list->str, "w");
-    if (!file)
-        return FALSE;
-
-    for (guint i = 0; i < vfr_provider_get_terrain_count(self); i++) {
-        VFRTerrain *terrain = vfr_provider_get_terrain_by_index(self, i);
-
-        fprintf(file, "%s;%s;%d\n", vfr_terrain_get_name(terrain),
-                                    vfr_terrain_get_icao(terrain),
-                                    vfr_terrain_is_favorite(terrain));
-    }
-
     return TRUE;
 }
 
@@ -190,7 +109,7 @@ static gboolean sia_update_list(VFRProvider *self)
     g_strfreev(icao);
     g_strfreev(name);
 
-    return sia_write_list(self);
+    return vfr_provider_write_list(self);
 }
 
 static gboolean sia_update_terrains(VFRProvider *self)
@@ -238,7 +157,7 @@ VFRProvider *vfr_provider_sia_init(void)
 {
     VFRProvider *self = vfr_provider_new("VAC France", "sia");
 
-    vfr_provider_set_callbacks(self, sia_needs_update, sia_update_terrains, sia_load_terrains);
+    vfr_provider_set_callbacks(self, sia_needs_update, sia_update_terrains);
 
     return self;
 }
