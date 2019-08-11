@@ -2,3 +2,4 @@
 librevfr
 
 src/librevfr-resources.*
+src/provider-basulm-apikey.h
