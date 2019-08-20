@@ -10,6 +10,7 @@
 
 struct _VFRFlight {
     GString *id;
+    GString *name;
     GString *origin;
     GString *orig_icao;
     GString *destination;
@@ -47,6 +48,7 @@ static VFRFlight *vfr_flight_load_from_file(const gchar *filename)
     object = json_node_get_object(root);
 
     flight->id = g_string_new(json_object_get_string_member(object, "id"));
+    flight->name = g_string_new(json_object_get_string_member(object, "name"));
     flight->origin = g_string_new(json_object_get_string_member(object, "origin"));
     flight->orig_icao = g_string_new(json_object_get_string_member(object, "orig_icao"));
     flight->destination = g_string_new(json_object_get_string_member(object, "destination"));
@@ -139,6 +141,14 @@ const gchar *vfr_flight_get_label(VFRFlight *flight)
 {
     if (flight)
         return flight->label->str;
+
+    return NULL;
+}
+
+const gchar *vfr_flight_get_name(VFRFlight *flight)
+{
+    if (flight)
+        return flight->name->str;
 
     return NULL;
 }

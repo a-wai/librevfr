@@ -24,6 +24,7 @@ guint vfr_flight_get_count();
 VFRFlight *vfr_flight_get(guint index);
 
 const gchar *vfr_flight_get_label(VFRFlight *flight);
+const gchar *vfr_flight_get_name(VFRFlight *flight);
 
 guint vfr_flight_get_leg_count(VFRFlight *flight);
 VFRFlightLeg *vfr_flight_get_leg(VFRFlight *flight, guint index);

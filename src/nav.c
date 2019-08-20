@@ -354,7 +354,8 @@ VFRNavPage *vfr_nav_page_new(GtkWidget *stack, GtkWidget *menu)
         VFRFlight *flight = vfr_flight_get(i);
 
         list_item = hdy_action_row_new();
-        hdy_action_row_set_title(list_item, vfr_flight_get_label(flight));
+        hdy_action_row_set_title(list_item, vfr_flight_get_name(flight));
+        hdy_action_row_set_subtitle(list_item, vfr_flight_get_label(flight));
 
         button = gtk_button_new_from_icon_name("document-edit-symbolic", GTK_ICON_SIZE_BUTTON);
         gtk_widget_set_valign(button, GTK_ALIGN_CENTER);

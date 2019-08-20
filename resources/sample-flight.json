@@ -1,5 +1,6 @@
 {
   "id": "sample-flight",
+  "name": "Sample flight",
   "origin": "Origin",
   "orig_icao": "ABCD",
   "destination": "Destination",
