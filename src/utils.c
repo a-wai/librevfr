@@ -39,7 +39,7 @@ GString *vfr_get_current_date(void)
     time_t now = time(NULL);
     struct tm *current_date = gmtime(&now);
 
-    g_string_printf(date, "%04d-%02d-%02d", current_date->tm_mday,
+    g_string_printf(date, "%02d-%02d-%04d", current_date->tm_mday,
                                             current_date->tm_mon,
                                             current_date->tm_year + 1900);
 
