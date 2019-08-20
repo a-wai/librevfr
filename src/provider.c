@@ -150,6 +150,7 @@ gboolean vfr_provider_write_list(VFRProvider *self)
                                     vfr_terrain_get_icao(terrain),
                                     vfr_terrain_is_favorite(terrain));
     }
+    fclose(file);
 
     return TRUE;
 }
